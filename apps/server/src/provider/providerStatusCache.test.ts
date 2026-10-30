@@ -8,10 +8,15 @@ import {
 import { createModelCapabilities } from "@t3tools/shared/model";
 import { assert, it } from "@effect/vitest";
 
-import { hydrateCachedProvider, isCachedProviderCorrelated } from "./providerStatusCache.ts";
+import {
+  hydrateCachedProvider,
+  isCachedProviderCorrelated,
+  orderProviderSnapshots,
+} from "./providerStatusCache.ts";
 
 const emptyCapabilities = createModelCapabilities({ optionDescriptors: [] });
 const CODEX_DRIVER = ProviderDriverKind.make("codex");
+const PI_DRIVER = ProviderDriverKind.make("pi");
 
 const makeProvider = (
   provider: ProviderDriverKind,
@@ -29,6 +34,15 @@ const makeProvider = (
   slashCommands: [],
   skills: [],
   ...overrides,
+});
+
+it("orders Pi before optional providers", () => {
+  assert.deepEqual(
+    orderProviderSnapshots([makeProvider(CODEX_DRIVER), makeProvider(PI_DRIVER)]).map(
+      (provider) => provider.driver,
+    ),
+    [PI_DRIVER, CODEX_DRIVER],
+  );
 });
 
 it.layer(NodeServices.layer)("providerStatusCache", (it) => {

@@ -651,8 +651,8 @@ function PairingForm({
   );
 }
 
-const PRIMARY_AGENT_DRIVERS = ["codex", "claudeAgent"] as const;
-type OnboardingAgentDriver = (typeof PRIMARY_AGENT_DRIVERS)[number];
+type OnboardingAgentDriver = "pi" | "codex" | "claudeAgent";
+const PRIMARY_AGENT_DRIVERS: readonly OnboardingAgentDriver[] = ["pi"];
 
 interface AgentTerminalSession {
   readonly environmentId: EnvironmentId;

@@ -72,8 +72,11 @@ export function selectOnboardingProvidersByDriver(
   return providersByDriver;
 }
 
-// These need no Node/npm and install where provider maintenance recognizes native binaries.
 const NATIVE_INSTALL_COMMANDS = {
+  pi: {
+    windows: "npm install -g --ignore-scripts @earendil-works/pi-coding-agent",
+    posix: "npm install -g --ignore-scripts @earendil-works/pi-coding-agent",
+  },
   claudeAgent: {
     windows: "irm https://claude.ai/install.ps1 | iex",
     posix: "curl -fsSL https://claude.ai/install.sh | bash",
@@ -109,6 +112,15 @@ export function resolveOnboardingProviderLoginCommand(
     const config = decodeCodexSettings(instance?.config ?? {});
     const binaryPath = Option.isSome(config) ? config.value.binaryPath : "codex";
     return `${quoteProviderBinary(binaryPath, "codex", platform)} login`;
+  }
+
+  if (provider.driver === "pi") {
+    const config =
+      instance?.config !== null && typeof instance?.config === "object"
+        ? (instance.config as Readonly<Record<string, unknown>>)
+        : undefined;
+    const binaryPath = typeof config?.binaryPath === "string" ? config.binaryPath : "pi";
+    return quoteProviderBinary(binaryPath, "pi", platform);
   }
 
   return provider.driver;

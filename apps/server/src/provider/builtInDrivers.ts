@@ -29,6 +29,7 @@ export type BuiltInDriversEnv =
   | MuseDriverEnv;
 
 export const BUILT_IN_DRIVERS: ReadonlyArray<AnyProviderDriver<BuiltInDriversEnv>> = [
+  PiDriver,
   CodexDriver,
   ClaudeDriver,
   CursorDriver,
@@ -36,7 +37,6 @@ export const BUILT_IN_DRIVERS: ReadonlyArray<AnyProviderDriver<BuiltInDriversEnv
   FxDriver,
   OpenCodeDriver,
   AntigravityDriver,
-  PiDriver,
   MuseDriver,
   AcpRegistryDriver,
 ];
@@ -55,10 +55,10 @@ export type BuiltInUsageReadersEnv =
 export const BUILT_IN_USAGE_DRIVERS: ReadonlyArray<
   AnyProviderDriver<BuiltInDriversEnv, BuiltInUsageReadersEnv>
 > = [
+  PiDriver,
   ClaudeDriver,
   CodexDriver,
   GrokDriver,
-  PiDriver,
   OpenCodeDriver,
   MuseDriver,
   AntigravityDriver,

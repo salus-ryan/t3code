@@ -8,6 +8,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import {
   getOnboardingProviderState,
+  resolveOnboardingProviderInstallCommand,
   resolveOnboardingProviderLoginCommand,
   selectOnboardingProvidersByDriver,
 } from "./providerReadiness.logic";
@@ -116,7 +117,39 @@ describe("selectOnboardingProvidersByDriver", () => {
   });
 });
 
+describe("resolveOnboardingProviderInstallCommand", () => {
+  it("installs Pi's CLI as the primary agent runtime", () => {
+    expect(resolveOnboardingProviderInstallCommand("pi", "linux")).toBe(
+      "npm install -g --ignore-scripts @earendil-works/pi-coding-agent",
+    );
+  });
+});
+
 describe("resolveOnboardingProviderLoginCommand", () => {
+  it("opens the configured Pi binary for authentication", () => {
+    const provider: ServerProvider = {
+      ...readyCodex,
+      driver: ProviderDriverKind.make("pi"),
+      instanceId: ProviderInstanceId.make("pi"),
+    };
+
+    expect(
+      resolveOnboardingProviderLoginCommand(
+        provider,
+        {
+          ...DEFAULT_SERVER_SETTINGS,
+          providerInstances: {
+            [provider.instanceId]: {
+              driver: provider.driver,
+              config: { binaryPath: "/opt/Pi Tools/pi" },
+            },
+          },
+        },
+        "linux",
+      ),
+    ).toBe("'/opt/Pi Tools/pi'");
+  });
+
   it("uses the selected Codex account binary", () => {
     const provider = { ...readyCodex, instanceId: ProviderInstanceId.make("codex_work") };
 

@@ -14,6 +14,7 @@ import {
   DEFAULT_SERVER_SETTINGS,
   globalIdleCompaction,
   idleCompactionPatch,
+  isUnconfiguredDefaultInstanceEnabled,
   requiredScopesForProjectMutation,
   resolveIdleCompaction,
   resolveProjectProviderInstanceEnabled,
@@ -304,10 +305,20 @@ describe("ClientSettings quit confirmation", () => {
 });
 
 describe("provider enabled defaults", () => {
+  it("uses Pi for shared text generation", () => {
+    expect(DEFAULT_SERVER_SETTINGS.textGenerationModelSelection).toEqual({
+      instanceId: ProviderInstanceId.make("pi"),
+      model: "default",
+    });
+  });
+
   it("resolves instance enabled state with explicit false winning", () => {
     const grok = ProviderDriverKind.make("grok");
+    const pi = ProviderDriverKind.make("pi");
     const codex = ProviderDriverKind.make("codex");
     expect(resolveProviderInstanceEnabled({ driver: grok, config: {} })).toBe(false);
+    expect(resolveProviderInstanceEnabled({ driver: pi, config: {} })).toBe(true);
+    expect(isUnconfiguredDefaultInstanceEnabled(ProviderInstanceId.make("pi"))).toBe(true);
     expect(resolveProviderInstanceEnabled({ driver: codex, config: {} })).toBe(true);
     expect(
       resolveProviderInstanceEnabled({ driver: ProviderDriverKind.make("ollama"), config: {} }),

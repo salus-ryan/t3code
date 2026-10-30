@@ -9,7 +9,7 @@ extensions, skills, context files, and native session history.
    22.19 or newer; its platform installers can install Node if needed. T3 Code supports Pi
    0.80.5 or newer.
 2. Run `pi` in a terminal, then `/login` to connect your model provider or configure its API key.
-3. Open T3 Code Settings, enable Pi, and refresh the provider.
+3. Start T3 Code. Pi is enabled by default; open Settings to refresh it or configure a custom binary path.
 
 For an npm installation, use:
 

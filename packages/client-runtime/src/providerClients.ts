@@ -16,6 +16,7 @@ import { openCodeClient } from "@t3tools/provider-opencode/client";
 import { piClient } from "@t3tools/provider-pi/client";
 
 export const providerClients = makeProviderClientRegistry([
+  piClient,
   {
     driverKind: ProviderDriverKind.make("codex"),
     label: "Codex",
@@ -42,7 +43,6 @@ export const providerClients = makeProviderClientRegistry([
     settingsSchema: AntigravitySettings,
   },
   museClient,
-  piClient,
   acpRegistryClient,
 ]);
 

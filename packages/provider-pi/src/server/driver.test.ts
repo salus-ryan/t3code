@@ -113,6 +113,10 @@ const makePiSpawner = Effect.fnUntraced(function* (
   return { spawner, launches, pendingCommand };
 });
 
+it("enables the default Pi instance", () => {
+  assert.isTrue(PiDriver.defaultConfig().enabled);
+});
+
 const create = (config: Partial<PiSettings> = {}, enabled = true) =>
   PiDriver.create({
     instanceId: ProviderInstanceId.make("pi-workspace-test"),

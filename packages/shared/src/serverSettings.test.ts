@@ -32,6 +32,11 @@ const decodeServerSettingsPatch = Schema.decodeUnknownSync(ServerSettingsPatch);
 const FOLDED_SERVER_SETTINGS = { ...DEFAULT_SERVER_SETTINGS, projectSettingsFolded: true };
 
 describe("fallbackTextGenerationModelSelection", () => {
+  it("prefers Pi for shared text-generation work", () => {
+    const fallback = fallbackTextGenerationModelSelection({}, () => true);
+    expect(fallback).toEqual({ instanceId: ProviderInstanceId.make("pi"), model: "default" });
+  });
+
   it("replaces and clears the fallback without carrying model options", () => {
     const fallbackModelSelection = { instanceId: ProviderInstanceId.make("codex"), model: "new" };
     const settings = applyServerSettingsPatch(

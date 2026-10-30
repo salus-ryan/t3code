@@ -5,9 +5,15 @@ import {
 } from "@t3tools/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
-import { getProviderModelCapabilities } from "./providerModels";
+import { getProviderModelCapabilities, resolveSelectableProvider } from "./providerModels";
 
 const PROVIDER = ProviderDriverKind.make("claudeAgent");
+
+describe("resolveSelectableProvider", () => {
+  it("falls back to Pi when no enabled provider is available", () => {
+    expect(resolveSelectableProvider([], undefined)).toBe(ProviderDriverKind.make("pi"));
+  });
+});
 
 function capabilities(id: string): ModelCapabilities {
   return {
